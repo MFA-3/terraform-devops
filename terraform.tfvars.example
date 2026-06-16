@@ -1,0 +1,95 @@
+# General Configuration
+aws_region   = "us-east-1"
+environment  = "prod"
+project_name = "eks-infrastructure"
+owner        = "DevOps Team"
+
+# VPC Configuration
+vpc_cidr             = "10.0.0.0/16"
+availability_zones   = ["us-east-1a", "us-east-1b", "us-east-1c"]
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
+enable_nat_gateway   = true
+single_nat_gateway   = false
+
+# EKS Configuration
+cluster_name                         = "my-eks-cluster"
+cluster_version                      = "1.28"
+cluster_endpoint_public_access       = true
+cluster_endpoint_private_access      = true
+cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"] # Restrict this in production
+
+# Node Groups Configuration
+node_groups = {
+  general = {
+    desired_size   = 3
+    min_size       = 2
+    max_size       = 5
+    instance_types = ["t3.large"]
+    capacity_type  = "ON_DEMAND"
+    disk_size      = 50
+    labels = {
+      role = "general"
+    }
+    taints = []
+  }
+  spot = {
+    desired_size   = 2
+    min_size       = 0
+    max_size       = 10
+    instance_types = ["t3.large", "t3a.large"]
+    capacity_type  = "SPOT"
+    disk_size      = 50
+    labels = {
+      role = "spot"
+    }
+    taints = []
+  }
+}
+
+# ECR Configuration
+ecr_repositories = [
+  "frontend-app",
+  "backend-api",
+  "worker-service"
+]
+ecr_image_tag_mutability = "MUTABLE"
+ecr_scan_on_push         = true
+
+# Bastion Configuration
+enable_bastion        = true
+bastion_instance_type = "t3.micro"
+bastion_allowed_cidrs = ["YOUR_IP/32"] # Replace with your IP
+bastion_key_name      = "your-ssh-key"  # Replace with your SSH key name
+
+# Route53 Configuration
+domain_name          = "example.com"
+create_route53_zone  = true
+
+# ALB Configuration
+enable_alb_ingress_controller = true
+
+# Monitoring Configuration
+enable_cloudwatch_logs       = true
+cloudwatch_log_retention_days = 30
+enable_container_insights    = true
+
+# KMS Configuration
+kms_deletion_window_in_days = 30
+
+# Secrets Configuration (Optional)
+# secrets = {
+#   database = {
+#     description = "Database credentials"
+#     secret_data = {
+#       username = "dbuser"
+#       password = "change-me-in-production"
+#     }
+#   }
+# }
+
+# Additional Tags
+additional_tags = {
+  CostCenter = "Engineering"
+  Compliance = "HIPAA"
+}
