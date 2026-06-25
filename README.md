@@ -354,6 +354,6 @@ For issues and questions:
 
 ---
 
-**Maintained by**: DevOps Team  
+**Maintained by**: DevOps Teams
 **Last Updated**: 2026-06-16  
 **Version**: 1.0.0
